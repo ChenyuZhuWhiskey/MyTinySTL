@@ -130,7 +130,7 @@ protected:
 
 public:
     explicit unary_negate(const _Predicate& __x) : _M_pred(__x) {}
-    bool operator()(const typename _Predicate:argument_type & __x) const {
+    bool operator()(const typename _Predicate::argument_type & __x) const {
         return !_M_pred(__x);
     }
 };
@@ -344,10 +344,10 @@ struct _Project2nd : public binary_function<_Arg1, _Arg2, _Arg2> {
 };
 
 template<class _Arg1, class _Arg2>
-struct project1st : public _Project1st<_Arg1, _Arg2, _Arg1> {};
+struct project1st : public _Project1st<_Arg1, _Arg2> {};
 
 template<class _Arg1, class _Arg2>
-struct project2nd : public _Project2nd<_Arg1, _Arg2, _Arg2> {};
+struct project2nd : public _Project2nd<_Arg1, _Arg2> {};
 
 template<class _Result>
 struct _Constant_void_fun {
@@ -371,13 +371,13 @@ struct _Constant_unary_fun {
 };
 
 template<class _Result, class _Arg1, class _Arg2>
-struct _Constant_unary_fun {
+struct _Constant_binary_fun {
     typedef _Arg1 first_argument_type;
     typedef _Arg2 second_argument_type;
     typedef _Result result_type;
     result_type _M_val;
 
-    _Constant_unary_fun(const result_type& __v) : _M_val(__v) {}
+    _Constant_binary_fun(const result_type& __v) : _M_val(__v) {}
     const result_type& operator()(const _Arg1&, const _Arg2&) const { return _M_val; }
 
 };
@@ -437,18 +437,16 @@ public:
         unsigned int __k = 1;
         _M_table[54] = __seed;
         size_t __i;
-        for (__i = 0; __i < 54; ++__i) {
+        for (__i = 0; __i < 54; __i++) {
             size_t __ii = (21 * (__i + 1) % 55) - 1;
             _M_table[__ii] = __k;
             __k = __seed - __k;
             __seed = _M_table[__ii];
         }
-        for (int __loop = 0; __loop < 4; ++__loop) {
-            for (__i = 0; __i < 55; __i++) {
+        for (int __loop = 0; __loop < 4; __loop++) {
+            for (__i = 0; __i < 55; __i++)
                 _M_table[__i] = _M_table[__i] - _M_table[(1 + __i + 30) % 55];
-            }
         }
-
         _M_index1 = 0;
         _M_index2 = 31;
     }
@@ -467,11 +465,11 @@ public:
 //  (4) Const vs non-const member function.
 
 template<class _Ret, class _Tp>
-class mem_fun_t : public unary_function<_Tp*, Ret> {
+class mem_fun_t : public unary_function<_Tp*, _Ret> {
 
 public:
-    explicit mem_fun_t(_Ret(_Tp::* __pf())) : _M_f(pf) {}
-    _Ret operator()(_Tp* __p) const { return (__p -> * _M_f)(); }
+    explicit mem_fun_t(_Ret(_Tp::* __pf())) : _M_f(__pf) {}
+    _Ret operator()(_Tp* __p) const { return (__p->*_M_f)(); }
 
 private:
     _Ret(_Tp::* _M_f)();
@@ -487,10 +485,10 @@ private:
 };
 
 template<class _Ret, class _Tp>
-class mem_fun_ref_t : public unary_function<_Tp*, Ret> {
+class mem_fun_ref_t : public unary_function<_Tp*, _Ret> {
 
 public:
-    explicit mem_fun_ref_t(_Ret(_Tp::* __pf())) : _M_f(pf) {}
+    explicit mem_fun_ref_t(_Ret(_Tp::* __pf())) : _M_f(__pf) {}
     _Ret operator()(_Tp& __r) const { return (__r.* _M_f)(); }
 
 private:
@@ -499,10 +497,10 @@ private:
 };
 
 template<class _Ret, class _Tp>
-class const_mem_fun_ref_t : public unary_function<_Tp*, Ret> {
+class const_mem_fun_ref_t : public unary_function<_Tp*, _Ret> {
 
 public:
-    explicit const_mem_fun_ref_t(_Ret(_Tp::* __pf()) const) : _M_f(pf) {}
+    explicit const_mem_fun_ref_t(_Ret(_Tp::* __pf)() const) : _M_f(__pf) {}
     _Ret operator()(_Tp& __r) const { return (__r.* _M_f)(); }
 
 private:
@@ -525,7 +523,7 @@ private:
 template<class _Ret, class _Tp, class _Arg>
 class const_mem_fun1_t : public binary_function<_Tp*, _Arg, _Ret> {
 public:
-    explicit mem_fun1_t(_Ret(_Tp::* __pf)(_Arg) const) : _M_f(__pf) {}
+    explicit const_mem_fun1_t(_Ret(_Tp::* __pf)(_Arg) const) : _M_f(__pf) {}
     _Ret operator()(const _Tp* __p, _Arg __x) const {
         return (__p->*_M_f)(__x);
     }
@@ -541,7 +539,7 @@ public:
     explicit mem_fun1_ref_t(_Ret(_Tp::* __pf)(_Arg)) : _M_f(__pf) {}
     _Ret operator()(_Tp& __r, _Arg __x) const { return (__r.*_M_f)(__x); }
 private:
-    _Ret(_Tp::* _M_f)(__Arg);
+    _Ret(_Tp::* _M_f)(_Arg);
 };
 
 template <class _Ret, class _Tp, class _Arg>

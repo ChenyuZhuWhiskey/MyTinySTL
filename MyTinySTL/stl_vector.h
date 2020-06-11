@@ -251,7 +251,19 @@ public:
         _M_fill_assign(__n, __val);
     }
 
-    void _M_fill_assign(size_type __n, const _Tp& __val);
+    void _M_fill_assign(size_type __n, const _Tp& __val) {
+        if (__n > capacity()) {
+            vector<_Tp, _Alloc> __tmp(__n, __val, get_allocator());
+            __tmp.swap(*this);
+        }
+        else if (__n > size()) {
+            fill(begin(), end(), __val);
+            _M_finish = uninitialized_fill_n(_M_finish, __n - size(), __val);
+        }
+        else {
+            erase(fill_n(begin(), __n, __val), end());
+        }
+    }
 
     template<class _InputIterator>
     void assign(_InputIterator __first, _InputIterator __last) {
@@ -361,7 +373,7 @@ public:
     void insert(iterator __position, const_iterator __first, const_iterator __lase);
 
     void insert(iterator __pos, size_type __n, const _Tp& __x) {
-        _M_fil_insert(__pos, __n, __x);
+        _M_fill_insert(__pos, __n, __x);
     }
 
     void _M_fill_insert(iterator __pos, size_type __n, const _Tp& __x);
@@ -488,20 +500,20 @@ operator<=(const vector<_Tp, _Alloc>& __lhs, const vector<_Tp, _Alloc>& __rhs) {
 
 
 
-template<class _Tp, class _Alloc>
-void vector<_Tp, _Alloc>::_M_fill_assign(size_type __n, const value_type& __val) {
-    if (__n > capacity()) {
-        vector<_Tp, _Alloc> __tmp(__n, __val, get_allocator());
-        __tmp.swap(*this);
-    }
-    else if (__n > size()) {
-        fill(begin(), end(), __val);
-        _M_finish = uninitialized_fill_n(_M_finish, __n - size(), __val);
-    }
-    else {
-        erase(fill_n(begin(), __n, __val), end());
-    }
-}
+//template<class _Tp, class _Alloc>
+//void vector<_Tp, _Alloc>::_M_fill_assign(size_type __n, const value_type& __val) {
+//    if (__n > capacity()) {
+//        vector<_Tp, _Alloc> __tmp(__n, __val, get_allocator());
+//        __tmp.swap(*this);
+//    }
+//    else if (__n > size()) {
+//        fill(begin(), end(), __val);
+//        _M_finish = uninitialized_fill_n(_M_finish, __n - size(), __val);
+//    }
+//    else {
+//        erase(fill_n(begin(), __n, __val), end());
+//    }
+//}
 
 template<class _Tp, class _Alloc> template<class _ForwardIter>
 void vector<_Tp, _Alloc>::_M_assign_aux(_ForwardIter __first, _ForwardIter __last, forward_iterator_tag) {

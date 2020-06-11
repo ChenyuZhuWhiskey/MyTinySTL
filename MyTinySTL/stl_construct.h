@@ -21,9 +21,9 @@ inline void _Construct(_T1* __p) {
 }
 
 template<class _Tp>
-void destroy_one(_Tp* pointer, __false_type) {
-	if (pointer != nullptr) {
-		pointer -> ~Tp();
+void destroy_one(_Tp* __pointer, __false_type) {
+	if (__pointer != nullptr) {
+		__pointer -> ~_Tp();
 	}
 }
 

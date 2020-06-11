@@ -60,5 +60,19 @@
     <ClInclude Include="stl_vector.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="stl_tempbuf.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stl_algo.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stl_hash_fun.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="test_hashtable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
