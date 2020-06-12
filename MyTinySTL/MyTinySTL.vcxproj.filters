@@ -69,6 +69,24 @@
     <ClInclude Include="stl_hash_fun.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="stl_map.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stl_set.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stl_multiset.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stl_multimap.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stl_hash_set.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stl_hash_map.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="test_hashtable.cpp">

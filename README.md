@@ -10,7 +10,7 @@
   - vector
   - list 
   - tree
-  - hashtable开始
+  - hashtable
 - functor
 - adaptor
 - unintitialized_xxx/copy fill
