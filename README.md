@@ -11,6 +11,8 @@
   - list 
   - tree
   - hashtable
+  - map/set
+  - hashmap/hashset
 - functor
 - adaptor
 - unintitialized_xxx/copy fill
